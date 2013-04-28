@@ -17,7 +17,7 @@ extern "C"
 
 }
 
-const int N = 2;
+const int N = 100000;
 const int SIZE = 8;
 
 void transpose2(float * data, float * res) {
@@ -36,6 +36,9 @@ void matrix_mul2(float * m1, float * m2, float * res) {
 			}
 		}
 }
+
+float res2[64 * N];
+ 	float arr1[64 * N];
 
 int main ( )
 {
@@ -124,14 +127,14 @@ int main ( )
  12320,   7428,  14939,  13950,   1290, -11719,  -1242,  -8672,
  11870,  -9515,   9164,  11261,  16279,  16374,   3654,  -3524,
  -7660,  -6642,  11146, -15605,  -4067, -13348,   5807, -14541};
- 	float res2[64 * N];
- 	float arr1[64 * N];
+ 	
  	for (int i = 0; i < 64 * N ;i++)
  		arr1[i] = cur[i % 64];
 
  	_fdct(arr1, res2, N);
  	//matrix_mul2(cur, cur, res2);
 
+/*
  	int n = 8;
  	for (int ii = 0; ii < N; ii++) {
  	for (int i = 0; i < n; i++) {
@@ -142,6 +145,6 @@ int main ( )
  	}
  	std::cout << std::endl;
  }
-
+*/
  	
 }

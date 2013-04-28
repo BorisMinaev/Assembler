@@ -30,10 +30,16 @@ global time_test
 
 ; void _fdct (float* data, float* res, int n)
 _fdct:  
-    mov eax, [esp + 4]; data
-    mov ebx, [esp + 8]; result
+    rdtsc   
+    push eax
 
-    mov edx, [esp + 12]
+    mov eax, [esp + 8]; data
+    mov ebx, [esp + 12]; result
+
+    mov edx, [esp + 16]
+
+    
+
     _main_loop:
         pusha
             push tmp
@@ -55,6 +61,15 @@ _fdct:
         add ebx, 64 * 4
         sub edx, 1
         jnz _main_loop
+
+    pop ebx
+    rdtsc
+    sub eax, ebx
+
+    push eax
+    push print_int
+    call printf
+    add esp, 8
   
 ret
 
@@ -114,9 +129,8 @@ mul64:
         add eax, 16
         sub ecx, 1
         jnz _loop_mul64
-
-
 ret
+
 ; void time_test (float* data, float* res)
 time_test:  
     mov ecx, [esp + 4]
