@@ -18,7 +18,7 @@ int main ( )
 	for (int i = 0; i < N; i++) {
 		for (int x = 0; x < SIZE; x++) {
 			for (int y = 0; y < SIZE; y++) {
-				data[it++] = 123.456;
+				data[it++] = rand() / 10000000.0;
 			}
 		}
 	}
@@ -39,7 +39,8 @@ int main ( )
 	for (int i = 0; i < N; i++) {
 		for (int x = 0; x < SIZE; x++) {
 			for (int y = 0; y < SIZE; y++) {
-				printf("%.3f ", res[it++]);
+				printf("%.3f ", res[it]);
+				it++;
 			}
 			printf("\n");
 		}
