@@ -12,10 +12,11 @@ extern "C"
 	void copy2(float* data, float* res);
 	void matrix_mul(float* data1, float * data2, float* res);
 	void matrix_mul3(float* data1, float * data2, float* res);
+	void matrix_mul4(float* data1, float * data2, float* res);
 
 }
 
-const int N = 10000;
+const int N = 1;
 const int SIZE = 8;
 
 void transpose2(float * data, float * res) {
@@ -72,14 +73,14 @@ int main ( )
 
  	t1 = clock();  
 	for (int it = 0; it < 1; it++) {
-		matrix_mul(data1, data2, res);
+		matrix_mul4(data1, data2, res);
 		//copy2(data1, res);
 	}
 	t2 = clock();
 	float diff = (((float)t2 - (float)t1) / 1000000.0F ) * 1000;   
  	printf("%f ms\n",diff);  
 
-/*
+
 	it = 0;
 	for (int i = 0; i < N; i++) {
 		for (int x = 0; x < SIZE; x++) {
@@ -91,5 +92,5 @@ int main ( )
 		}
 		printf("\n");
 	}
-	*/
+	
 }

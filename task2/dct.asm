@@ -11,6 +11,7 @@ global copy
 global copy2
 global matrix_mul
 global matrix_mul3
+global matrix_mul4
 global time_test
 
 ; void DFCT (float* data, float* res, int n)
@@ -340,6 +341,87 @@ matrix_mul3:
 
     sub esi, 1
     jnz lloopp5
+    
+    rdtsc
+    sub eax, [esp]
+    add esp, 4
+
+    push eax
+    push print_int
+    call printf
+    add esp, 8
+  
+ret
+
+; void matrix_mul4 (float* data1, float * data2, float* res)
+matrix_mul4:  
+    ; xmm7 always equals 0
+    push 0.0
+    push 0.0
+    push 0.0
+    push 0.0
+    movups xmm7, [esp]
+    add esp, 16
+
+    rdtsc
+    push eax
+
+    mov esi, 1000
+    lloopp6:
+    mov eax, [esp + 8]; data1
+    mov edx, [esp + 16]; res
+
+    ; matrix mul
+    mov cl, 0
+    _loop_mul1:
+        ; first part
+        movaps xmm0, xmm7
+        
+        mov ebx, [esp + 12]
+        mov ch, 0
+        _loop_mul2:
+            movss xmm1, [eax]
+            shufps xmm1, xmm1, 0h
+            movaps xmm2, [ebx]
+            mulps xmm1, xmm2
+            addps xmm0, xmm1
+
+            add eax, 4
+            add ebx, 32
+            inc ch
+            cmp ch, 8
+            jne _loop_mul2
+
+        movaps [edx], xmm0
+
+        sub eax, 32
+        ; second part
+        movaps xmm0, xmm7
+        mov ebx, [esp + 12]
+        mov ch, 0
+        _loop_mul22:
+            movss xmm1, [eax]
+            shufps xmm1, xmm1, 0h
+            movaps xmm2, [ebx + 16]
+            mulps xmm1, xmm2
+            addps xmm0, xmm1
+
+            add eax, 4
+            add ebx, 32
+            inc ch
+            cmp ch, 8
+            jne _loop_mul22
+
+        movaps [edx + 16], xmm0
+
+        add edx, 32
+        inc cl
+        cmp cl, 8
+        jne _loop_mul1
+
+    ; matrix mul end
+    sub esi, 1
+    jnz lloopp6
     
     rdtsc
     sub eax, [esp]
