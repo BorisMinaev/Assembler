@@ -4,13 +4,16 @@
 extern "C"
 {
 
-	void FDCT();
+	void FDCT(int x, int * res);
 
 }
 
 int main ( )
 {
 
-	FDCT();
+	int x = 123;
+	int res = 0;
+	FDCT(x, &res);
+	std::cout << res << std::endl;
 	
 }
