@@ -7,18 +7,22 @@ section .text
 
 global FDCT
 
-; void DFCT (int x, int* res)
+; void DFCT (float* x, float* res, int n)
 FDCT:  
     ;print x   
-    mov eax, [esp + 4]
-    push eax
-    push print_int
-    call printf
-    add esp, 8
+    ;mov eax, [esp + 4]
+    ;push eax
+    ;push print_int
+    ;call printf
+    ;add esp, 8
 
-    ; save 128 to *res
+    ; mov 654.321 to xmm1
+    push 654.321
+    movss xmm1, [esp]
+    add esp, 4
+
+    ; write xmm1 to *res
     mov eax, [esp + 8]
-    mov ebx, 128
-    mov [eax], ebx
+    movss [eax], xmm1
   
 ret
