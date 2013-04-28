@@ -1,15 +1,24 @@
 #include <iostream>
 #include <cmath>
+#include <time.h>  
 
 extern "C"
 {
 
-	void FDCT(float* x, float* res, int n);
+	void FDCT(float* data, float* res, int n);
+	void transpose(float* data, float* res);
+	void copy(float* data, float* res);
 
 }
 
 const int N = 1;
 const int SIZE = 8;
+
+void transpose2(float * data, float * res) {
+	for (int i = 0; i < 8; i++)
+		for (int j = 0; j < 8; j++)
+			res[i * 8 + j] = data[j * 8 + i];
+}
 
 int main ( )
 {
@@ -33,7 +42,16 @@ int main ( )
 		}
 	}
 
-	FDCT(data, res, N);
+	//FDCT(data, res, N);
+	clock_t t1, t2;
+
+ 	t1 = clock();  
+	for (int it = 0; it < 10000000; it++) {
+		copy(data, res);
+	}
+	t2 = clock();
+	float diff = (((float)t2 - (float)t1) / 1000000.0F ) * 1000;   
+ 	printf("%f ms\n",diff);  
 
 	it = 0;
 	for (int i = 0; i < N; i++) {
