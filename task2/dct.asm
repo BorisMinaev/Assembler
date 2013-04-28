@@ -8,6 +8,7 @@ section .text
 global FDCT
 global transpose
 global copy
+global copy2
 global matrix_mul
 global matrix_mul3
 
@@ -62,8 +63,10 @@ ret
 
 ; void copy (float* data, float* res)
 copy:  
-    mov eax, [esp + 4]; data
-    mov ebx, [esp + 8]; result
+    rdtsc
+    push eax
+    mov eax, [esp + 8]; data
+    mov ebx, [esp + 12]; result
 
     mov ecx, 0
     _loop_ecx2:
@@ -84,6 +87,48 @@ copy:
         cmp ecx, 32
         jne _loop_ecx2
 
+    rdtsc
+    sub eax, [esp]
+    add esp, 4
+
+    push eax
+    push print_int
+    call printf
+    add esp, 8
+  
+ret
+
+; void copy2 (float* data, float* res)
+copy2:  
+    rdtsc
+    push eax
+    mov eax, [esp + 8]; data
+    mov ebx, [esp + 12]; result
+
+    mov ecx, 0
+    _loop_ecx22:
+
+            movaps xmm1, [eax]
+            movaps [ebx], xmm1
+
+            movaps xmm1, [eax + 16]
+            movaps [ebx + 16], xmm1
+
+        
+        add eax, 32
+        add ebx, 32
+        add ecx, 1
+        cmp ecx, 8
+        jne _loop_ecx22
+
+    rdtsc
+    sub eax, [esp]
+    add esp, 4
+
+    push eax
+    push print_int
+    call printf
+    add esp, 8
   
 ret
 

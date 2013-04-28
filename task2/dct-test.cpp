@@ -8,6 +8,7 @@ extern "C"
 	void FDCT(float* data, float* res, int n);
 	void transpose(float* data, float* res);
 	void copy(float* data, float* res);
+	void copy2(float* data, float* res);
 	void matrix_mul(float* data1, float * data2, float* res);
 	void matrix_mul3(float* data1, float * data2, float* res);
 
@@ -70,7 +71,8 @@ int main ( )
 
  	t1 = clock();  
 	for (int it = 0; it < 1; it++) {
-		matrix_mul(data1, data2, res);
+		//matrix_mul(data1, data2, res);
+		copy2(data1, res);
 	}
 	t2 = clock();
 	float diff = (((float)t2 - (float)t1) / 1000000.0F ) * 1000;   
