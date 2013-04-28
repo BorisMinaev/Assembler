@@ -36,8 +36,11 @@ ret
 
 ; void transpose (float* data, float* res)
 transpose:  
-    mov eax, [esp + 4]; data
-    mov ebx, [esp + 8]; result
+    rdtsc
+    push eax
+
+    mov eax, [esp + 8]; data
+    mov ebx, [esp + 12]; result
 
     mov ecx, 0
     _loop_ecx:
@@ -58,6 +61,14 @@ transpose:
         cmp ecx, 32
         jne _loop_ecx
 
+    rdtsc
+    sub eax, [esp]
+    add esp, 4
+
+    push eax
+    push print_int
+    call printf
+    add esp, 8
   
 ret
 

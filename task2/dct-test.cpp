@@ -72,7 +72,7 @@ int main ( )
  	t1 = clock();  
 	for (int it = 0; it < 1; it++) {
 		//matrix_mul(data1, data2, res);
-		copy2(data1, res);
+		transpose(data1, res);
 	}
 	t2 = clock();
 	float diff = (((float)t2 - (float)t1) / 1000000.0F ) * 1000;   
