@@ -22,40 +22,36 @@ float cur[] = {-16342,   2084, -10049,  10117,   2786,   -659,  -4905,  12975,
 	11870,  -9515,   9164,  11261,  16279,  16374,   3654,  -3524,
 	-7660,  -6642,  11146, -15605,  -4067, -13348,   5807, -14541};
 
-	float res1[64 * N];
-	float res2[64 * N];
-	float data[64 * N];
+float res1[SIZE * SIZE * N];
+float res2[SIZE * SIZE * N];
+float data[SIZE * SIZE * N];
 
-	int main () {
+int main () {
+	for (int i = 0; i < SIZE * SIZE * N; i++)
+		data[i] = cur[i % (SIZE * SIZE)];
 
-		for (int i = 0; i < 64 * N; i++) {
-			data[i] = cur[i % 64];
-		}
-
-		_fdct(data, res1, N);
-		_idct(res1, res2, N);
-		bool fail = false;
-		for (int i = 0; i < 64 * 1; i++) {
-			float diff = res2[i] - data[i];
-			if (diff < 0)
-				diff = -diff;
-			if (diff > 0.1) {
-				fail = true;
-			}
-		}
-
-		if (fail) {
-			std::cout << "fail" << std::endl;
-		}
-
-		int n = 8;
-		for (int ii = 0; ii < 1; ii++) {
-			for (int i = 0; i < n; i++) {
-				for (int j =0; j < n; j++) {
-					printf("%.2f ", res1[ii * 64 + i * 8 + j]);
-				}
-				std::cout << std::endl;
-			}
-		}
-
+	_fdct(data, res1, N);
+	_idct(res1, res2, N);
+	bool fail = false;
+	for (int i = 0; i < SIZE * SIZE * N; i++) {
+		float diff = res2[i] - data[i];
+		if (diff < 0)
+			diff = -diff;
+		if (diff > 0.1)
+			fail = true;
 	}
+
+	if (fail)
+		std::cout << "fail" << std::endl;
+	}
+
+	for (int ii = 0; ii < 1; ii++) {
+		for (int i = 0; i < SIZE; i++) {
+			for (int j =0; j < SIZE; j++) {
+				printf("%.2f ", res1[ii * SIZE * SIZE + i * SIZE + j]);
+			}
+			std::cout << std::endl;
+		}
+	}
+
+}
