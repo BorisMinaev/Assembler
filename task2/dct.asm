@@ -11,6 +11,7 @@ global copy
 global copy2
 global matrix_mul
 global matrix_mul3
+global time_test
 
 ; void DFCT (float* data, float* res, int n)
 FDCT:  
@@ -34,11 +35,44 @@ FDCT:
 ret
 
 
+; void time_test (float* data, float* res)
+time_test:  
+    mov ecx, [esp + 4]
+    mov ebx, [esp + 8]
+    rdtsc
+    push eax
+
+    mov edx, 0
+    looooop:
+    mov eax, [ecx + edx]
+    mov [ebx + edx], eax
+    add edx, 1
+    cmp edx, 640
+    jne looooop
+ 
+    
+
+    pop ebx
+    rdtsc
+    sub eax, ebx
+
+    push eax
+    push print_int
+    call printf
+    add esp, 8
+
+
+  
+ret
+
 ; void transpose (float* data, float* res)
 transpose:  
     rdtsc
     push eax
 
+    mov esi, 1000
+
+    _lloopp:
     mov eax, [esp + 8]; data
     mov ebx, [esp + 12]; result
 
@@ -61,6 +95,9 @@ transpose:
         cmp ecx, 32
         jne _loop_ecx
 
+    sub esi, 1
+    jnz _lloopp
+
     rdtsc
     sub eax, [esp]
     add esp, 4
@@ -76,6 +113,10 @@ ret
 copy:  
     rdtsc
     push eax
+
+    mov esi, 1000
+
+    lloopp2:
     mov eax, [esp + 8]; data
     mov ebx, [esp + 12]; result
 
@@ -98,6 +139,9 @@ copy:
         cmp ecx, 32
         jne _loop_ecx2
 
+    sub esi, 1
+    jnz lloopp2
+
     rdtsc
     sub eax, [esp]
     add esp, 4
@@ -113,6 +157,9 @@ ret
 copy2:  
     rdtsc
     push eax
+
+    mov esi, 1000
+    lloopp3:
     mov eax, [esp + 8]; data
     mov ebx, [esp + 12]; result
 
@@ -132,6 +179,9 @@ copy2:
         cmp ecx, 8
         jne _loop_ecx22
 
+    sub esi, 1
+    jnz lloopp3
+
     rdtsc
     sub eax, [esp]
     add esp, 4
@@ -148,6 +198,9 @@ ret
 matrix_mul:  
     rdtsc
     push eax
+
+    mov esi, 1000
+    lloopp4:
     mov eax, [esp + 8]; data1
     mov ebx, [esp + 12]; data2
     mov ecx, [esp + 16]; data3
@@ -219,6 +272,8 @@ matrix_mul:
         cmp dl, 32
         jne _loop_dl
 
+    sub esi, 1
+    jnz lloopp4
 
     rdtsc
     sub eax, [esp]
@@ -235,10 +290,12 @@ ret
 matrix_mul3:  
     rdtsc
     push eax
+
+    mov esi, 1000
+    lloopp5:
     mov eax, [esp + 8]; data1
     mov ebx, [esp + 12]; data2
     mov ecx, [esp + 16]; data3
-
 
     mov dl, 0
     _loop_dl2:
@@ -281,6 +338,9 @@ matrix_mul3:
         cmp dl, 32
         jne _loop_dl2
 
+    sub esi, 1
+    jnz lloopp5
+    
     rdtsc
     sub eax, [esp]
     add esp, 4
